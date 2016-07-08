@@ -17,6 +17,7 @@ namespace The_Coliseum
     {
         //Statics
         public static Server MainServer;
+
         public enum LogType
         {
             Common,
@@ -162,19 +163,35 @@ namespace The_Coliseum
             if (Game.Started)
             {
                 int diff = (DateTime.Now - prevTime).Seconds;
-                MessageSender.SendInt(MessageSender.IntType.TurnPercent, (int)(((float)diff / (float)TurnTime) * 100), Server.MainServer.Game.Characters);
+                if (diff > TurnTime)
+                    diff = TurnTime;
+
+                ServerMessageSender.SendInt(ServerMessageSender.IntType.TurnPercent, (int)(((float)diff / (float)TurnTime) * 100), Server.MainServer.Game.Characters);
 
                 if (turnProgress.GetCurrentParent().InvokeRequired)
                     turnProgress.GetCurrentParent().Invoke(new Action(() => turnProgress.Value = diff));
                 else
                     turnProgress.Value = diff;
 
-                if (diff >= TurnTime)
+                if (diff == TurnTime)
                     MakeTurn();
             }
             else
             {
-                //if (Game.Characters.Count)
+                if (Game.GetReadyPlayers() > Game.Characters.Count / 2)
+                {
+                    ReadyTimer++;
+
+                    if (ReadyTimer < 30)
+                        ServerMessageSender.SendInfo(LogType.Warning, "Game starts in " + (30 - ReadyTimer) + " seconds", Game.Characters);
+                    else if (!Game.Started)
+                    {
+                        Game.Started = true;
+                        ServerMessageSender.SendReady(true, Game.Characters);
+                    }
+                } 
+                else
+                    ReadyTimer = 0;
             }
         }
 
@@ -182,6 +199,7 @@ namespace The_Coliseum
         {
             prevTime = DateTime.Now;
             TurnNumber++;
+            ServerMessageSender.SendInt(ServerMessageSender.IntType.TurnNumber, TurnNumber, Game.Characters);
 
             if (turnProgress.GetCurrentParent().InvokeRequired)
                 turnProgress.GetCurrentParent().Invoke(new Action(() => turnLabel.Text = "Turn: " + TurnNumber));
@@ -209,58 +227,20 @@ namespace The_Coliseum
 
         public void HandleApproval(NetIncomingMessage msg)
         {
-            string playerName = msg.ReadString();
-            string charName = msg.ReadString();
-
-            if (Game.Characters.Find(a => a.PlayerName == playerName) != null)
-            {
-                if (Game.Characters.Find(a => a.PlayerName == playerName).Name == charName)
-                {
-                    Character character = Game.Characters.Find(a => a.Name == charName);
-                    character.Connection = msg.SenderConnection;
-                    character.Connection.Approve();
-                    MessageSender.SendInfo("You joined the game", character);
-                    Log(character.Name + " joined the game", LogType.Common);
-                    MessageSender.SendLogin(true, character);
-                }
-                else
-                {
-                    msg.SenderConnection.Approve();
-                    MessageSender.SendInfo("Wrong character name", msg.SenderConnection);
-                    Log(playerName + " tried to log in with wrong character name", LogType.Common);
-                    MessageSender.SendLogin(false, msg.SenderConnection);
-                }
-            }
-            else if (!Game.Started)
-            {
-                Character character = new Character();
-                character.Name = charName;
-                character.Connection = msg.SenderConnection;
-                character.Connection.Approve();
-                Game.Characters.Add(character);
-
-                UpdateCharacterList();
-                MessageSender.SendInfo("You joined the game", character);
-                Log(character.Name + " joined the game", LogType.Common);
-                MessageSender.SendLogin(true, character);
-            }
-            else if (Game.Started)
-            {
-                msg.SenderConnection.Approve();
-                MessageSender.SendInfo("Sorry, but the game has already started", msg.SenderConnection);
-                Log(playerName + " tried to join the game, but it has already started", LogType.Common);
-                MessageSender.SendLogin(false, msg.SenderConnection);
-            }
+            msg.SenderConnection.Approve();
         }
 
         //Data
         public void HandleData(NetIncomingMessage msg)
         {
-            MessageSender.MessageType type = (MessageSender.MessageType)msg.ReadByte();
+            ServerMessageSender.MessageType type = (ServerMessageSender.MessageType)msg.ReadByte();
             switch (type)
             {
-                case MessageSender.MessageType.Ready:
+                case ServerMessageSender.MessageType.Ready:
                     HandleReady(msg);
+                    break;
+                case ServerMessageSender.MessageType.Login:
+                    HandleLogin(msg);
                     break;
             }
         }
@@ -268,21 +248,95 @@ namespace The_Coliseum
         public void HandleReady(NetIncomingMessage msg)
         {
             bool ready = msg.ReadBoolean();
-            Character character = MessageSender.GetCharacterFromMessage(msg);
+            Character character = ServerMessageSender.GetCharacterFromMessage(msg);
 
             if (ready)
             {
                 character.Ready = true;
                 Log(character.PlayerName + " is ready", LogType.Common);
-                MessageSender.SendInfo(character.PlayerName + " is ready", Server.MainServer.Game.Characters);
-                MessageSender.SendInt(MessageSender.IntType.ReadyPlayers, Server.MainServer.Game.GetReadyPlayers(), Server.MainServer.Game.Characters);
+                ServerMessageSender.SendInfo(LogType.Common, character.PlayerName + " is ready", Server.MainServer.Game.Characters);
+                ServerMessageSender.SendInt(ServerMessageSender.IntType.ReadyPlayers, Server.MainServer.Game.GetReadyPlayers(), Server.MainServer.Game.Characters);
             }
             else
             {
                 character.Ready = false;
                 Log(character.PlayerName + " is no longer ready", LogType.Common);
-                MessageSender.SendInfo(character.PlayerName + " is no longer ready", Server.MainServer.Game.Characters);
-                MessageSender.SendInt(MessageSender.IntType.ReadyPlayers, Server.MainServer.Game.GetReadyPlayers(), Server.MainServer.Game.Characters);
+                ServerMessageSender.SendInfo(LogType.Common, character.PlayerName + " is no longer ready", Server.MainServer.Game.Characters);
+                ServerMessageSender.SendInt(ServerMessageSender.IntType.ReadyPlayers, Server.MainServer.Game.GetReadyPlayers(), Server.MainServer.Game.Characters);
+            }
+        }
+
+        public void HandleLogin(NetIncomingMessage msg)
+        {
+            string playerName = msg.ReadString();
+            string charName = msg.ReadString();
+
+            if (Game.Characters.Find(a => a.PlayerName == playerName) != null)
+            {
+                if (Game.Characters.Find(a => a.PlayerName == playerName).Name == charName)
+                {
+                    //Log in New Player to Exitsting Character Slot
+                    Character character = Game.Characters.Find(a => a.PlayerName == playerName);
+                    character.Connection = msg.SenderConnection;
+                    character.Connection.Approve();
+                    ServerMessageSender.SendInfo(LogType.Common, "Joined the game", character);
+                    Log(character.PlayerName + " joined the game", LogType.Common);
+                    ServerMessageSender.SendLogin(true, character);
+
+                    //Send Info About Users
+                    ServerMessageSender.SendInt(ServerMessageSender.IntType.CurrentPlayers, Game.Characters.Count, Game.Characters);
+                    ServerMessageSender.SendInt(ServerMessageSender.IntType.ReadyPlayers, Game.GetReadyPlayers(), Game.Characters);
+
+                    foreach (Character ichar in Game.Characters)
+                    {
+                        if (ichar != character)
+                            ServerMessageSender.SendString(ServerMessageSender.StringType.NewPlayer, ichar.PlayerName, character);
+                    }
+
+                    //Send About Game
+                    ServerMessageSender.SendReady(Game.Started, character);
+                    ServerMessageSender.SendInt(ServerMessageSender.IntType.TurnNumber, TurnNumber, character);
+                }
+                else
+                {
+                    msg.SenderConnection.Approve();
+                    ServerMessageSender.SendInfo(LogType.Common, "Wrong character name", msg.SenderConnection);
+                    Log(playerName + " tried to log in with wrong character name", LogType.Common);
+                    ServerMessageSender.SendLogin(false, msg.SenderConnection);
+                }
+            }
+            else if (!Game.Started)
+            {
+                //Create New Character / Register New Player
+                Character character = new Character();
+                character.Name = charName;
+                character.PlayerName = playerName;
+                character.Connection = msg.SenderConnection;
+                character.Connection.Approve();
+                Game.Characters.Add(character);
+
+                UpdateCharacterList();
+                ServerMessageSender.SendInfo(LogType.Common, character.PlayerName + " joined the game", Game.Characters);
+                ServerMessageSender.SendString(ServerMessageSender.StringType.NewPlayer, character.PlayerName, Game.Characters);
+                Log(character.PlayerName + " joined the game", LogType.Common);
+                ServerMessageSender.SendLogin(true, character);
+
+                //Send Info About Users
+                ServerMessageSender.SendInt(ServerMessageSender.IntType.CurrentPlayers, Game.Characters.Count, Game.Characters);
+                ServerMessageSender.SendInt(ServerMessageSender.IntType.ReadyPlayers, Game.GetReadyPlayers(), Game.Characters);
+
+                foreach (Character ichar in Game.Characters)
+                {
+                    if (ichar != character)
+                        ServerMessageSender.SendString(ServerMessageSender.StringType.NewPlayer, ichar.PlayerName, character);
+                }
+            }
+            else if (Game.Started)
+            {
+                msg.SenderConnection.Approve();
+                ServerMessageSender.SendInfo(LogType.Common, "Sorry, but the game has already started", msg.SenderConnection);
+                Log(playerName + " tried to join the game, but it has already started", LogType.Common);
+                ServerMessageSender.SendLogin(false, msg.SenderConnection);
             }
         }
 
@@ -309,7 +363,7 @@ namespace The_Coliseum
         }
     }
 
-    public static class MessageSender
+    public static class ServerMessageSender
     {
         public enum MessageType
         {
@@ -325,12 +379,15 @@ namespace The_Coliseum
         {
             CurrentPlayers,
             ReadyPlayers,
-            TurnPercent
+            TurnPercent,
+            TurnNumber
         }
 
         public enum StringType
         {
-
+            NewPlayer,
+            NewLocation,
+            NewAction
         }
 
         public enum ChatType
@@ -441,26 +498,29 @@ namespace The_Coliseum
             SendToCharacters(msg, characters, 0);
         }
 
-        public static void SendInfo(string message, Character character)
+        public static void SendInfo(Server.LogType type, string message, Character character)
         {
             NetOutgoingMessage msg = Server.MainServer.NetServer.CreateMessage();
             msg.Write((byte)MessageType.Info);
+            msg.Write((byte)type);
             msg.Write(message);
             SendToCharacter(msg, character, 0);
         }
 
-        public static void SendInfo(string message, NetConnection connection)
+        public static void SendInfo(Server.LogType type, string message, NetConnection connection)
         {
             NetOutgoingMessage msg = Server.MainServer.NetServer.CreateMessage();
             msg.Write((byte)MessageType.Info);
+            msg.Write((byte)type);
             msg.Write(message);
             SendToConnection(msg, connection, 0);
         }
 
-        public static void SendInfo(string message, List<Character> characters)
+        public static void SendInfo(Server.LogType type, string message, List<Character> characters)
         {
             NetOutgoingMessage msg = Server.MainServer.NetServer.CreateMessage();
             msg.Write((byte)MessageType.Info);
+            msg.Write((byte)type);
             msg.Write(message);
             SendToCharacters(msg, characters, 0);
         }
@@ -489,7 +549,8 @@ namespace The_Coliseum
 
         public static void SendToConnections(NetOutgoingMessage msg, List<NetConnection> connections, int channel)
         {
-            Server.MainServer.NetServer.SendMessage(msg, connections, NetDeliveryMethod.ReliableOrdered, channel);
+            if (connections.Count > 0)
+                Server.MainServer.NetServer.SendMessage(msg, connections, NetDeliveryMethod.ReliableOrdered, channel);
         }
 
         public static Character GetCharacterFromMessage(NetIncomingMessage msg)

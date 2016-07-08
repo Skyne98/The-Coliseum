@@ -110,6 +110,7 @@
             this.connectBut.TabIndex = 4;
             this.connectBut.Text = "Connect";
             this.connectBut.UseVisualStyleBackColor = true;
+            this.connectBut.Click += new System.EventHandler(this.connectBut_Click);
             // 
             // characterBox
             // 
@@ -120,7 +121,7 @@
             this.characterBox.Name = "characterBox";
             this.characterBox.Size = new System.Drawing.Size(392, 22);
             this.characterBox.TabIndex = 3;
-            this.characterBox.Text = "Henry";
+            this.characterBox.Text = "Henry Smith";
             // 
             // label2
             // 
@@ -141,7 +142,7 @@
             this.nameBox.Name = "nameBox";
             this.nameBox.Size = new System.Drawing.Size(392, 22);
             this.nameBox.TabIndex = 1;
-            this.nameBox.Text = "John Smith";
+            this.nameBox.Text = "Player";
             // 
             // label1
             // 

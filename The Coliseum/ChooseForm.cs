@@ -8,11 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Lidgren.Network;
+using System.Threading;
 
 namespace The_Coliseum
 {
     public partial class ChooseForm : Form
     {
+        public Client Client;
+
         public ChooseForm()
         {
             InitializeComponent();
@@ -22,15 +25,48 @@ namespace The_Coliseum
         {
             if (tabControl1.TabPages.IndexOf(tabControl1.SelectedTab) == 0) //Play
             {
-                Client client = new Client();
-                client.Show();
-                Close();
+                if (Client != null)
+                {
+                    Client.Show();
+                    Close();
+                    Client.Init();
+                }
+                else
+                {
+                    MessageBox.Show("You have to connect first");
+                }
             }
             else //Host
             {
                 Server server = new Server(Convert.ToInt32(turnBox.Text), Convert.ToInt32(pointsBox.Text));
                 server.Show();
                 Close();
+            }
+        }
+
+        private void connectBut_Click(object sender, EventArgs e)
+        {
+            Client = new Client(nameBox.Text, characterBox.Text, addressBox.Text);
+
+            try
+            {
+                NetPeerConfiguration config = new NetPeerConfiguration("The Coliseum");
+
+                Client.NetClient = new NetClient(config);
+                Client.NetClient.Start();
+                Client.NetClient.Connect(Client.IP, Client.Port);
+
+                Thread.Sleep(1000);
+
+                connectBut.Text = "Connected";
+                connectBut.Enabled = false;
+                nameBox.ReadOnly = true;
+                addressBox.ReadOnly = true;
+                characterBox.ReadOnly = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex);
             }
         }
     }

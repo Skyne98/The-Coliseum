@@ -12,10 +12,29 @@ namespace The_Coliseum
 
         //Characters
         public List<Character> Characters = new List<Character>();
+        //Locations
+        public List<Location> Locations = new List<Location>();
+        public List<LocationLink> LocationLinks = new List<LocationLink>();
 
         public Game()
         {
+            Init();
+        }
 
+        public void Init()
+        {
+            //Create Locations
+            InitLocations();
+        }
+
+        public void InitLocations()
+        {
+            Location.CreateLocation("Start");
+            Location.CreateLocation("Forest");
+            Location.CreateLocation("Swamp");
+
+            Location.CreateLink("Start", "Forest");
+            Location.CreateLink("Start", "Swamp");
         }
 
         public int GetReadyPlayers()

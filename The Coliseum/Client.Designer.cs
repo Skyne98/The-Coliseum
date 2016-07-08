@@ -29,27 +29,33 @@
         private void InitializeComponent()
         {
             this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.turnProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.readyBut = new System.Windows.Forms.Button();
+            this.playersBox = new System.Windows.Forms.ListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.logBox = new System.Windows.Forms.RichTextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.messageBox = new System.Windows.Forms.TextBox();
-            this.messageTypeBox = new System.Windows.Forms.ComboBox();
             this.sendBut = new System.Windows.Forms.Button();
-            this.playersBox = new System.Windows.Forms.ListBox();
-            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.turnProgress = new System.Windows.Forms.ToolStripProgressBar();
-            this.readyBut = new System.Windows.Forms.Button();
+            this.messageTypeBox = new System.Windows.Forms.ComboBox();
+            this.characterLab = new System.Windows.Forms.Label();
+            this.playerLab = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.locationLab = new System.Windows.Forms.Label();
             this.statusStrip.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip
@@ -63,6 +69,17 @@
             this.statusStrip.Size = new System.Drawing.Size(1321, 26);
             this.statusStrip.TabIndex = 0;
             this.statusStrip.Text = "statusStrip";
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(49, 21);
+            this.statusLabel.Text = "Status";
+            // 
+            // turnProgress
+            // 
+            this.turnProgress.Name = "turnProgress";
+            this.turnProgress.Size = new System.Drawing.Size(267, 20);
             // 
             // tableLayoutPanel1
             // 
@@ -106,21 +123,45 @@
             this.tabPage1.Text = "Game";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // readyBut
+            // 
+            this.readyBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.readyBut.Location = new System.Drawing.Point(0, 634);
+            this.readyBut.Name = "readyBut";
+            this.readyBut.Size = new System.Drawing.Size(372, 36);
+            this.readyBut.TabIndex = 1;
+            this.readyBut.Text = "Not Ready";
+            this.readyBut.UseVisualStyleBackColor = true;
+            this.readyBut.Click += new System.EventHandler(this.readyBut_Click);
+            // 
+            // playersBox
+            // 
+            this.playersBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.playersBox.FormattingEnabled = true;
+            this.playersBox.ItemHeight = 16;
+            this.playersBox.Location = new System.Drawing.Point(0, 0);
+            this.playersBox.Name = "playersBox";
+            this.playersBox.Size = new System.Drawing.Size(372, 628);
+            this.playersBox.TabIndex = 0;
+            // 
             // tabPage2
             // 
+            this.tabPage2.BackColor = System.Drawing.Color.White;
+            this.tabPage2.Controls.Add(this.locationLab);
+            this.tabPage2.Controls.Add(this.panel1);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(363, 671);
+            this.tabPage2.Size = new System.Drawing.Size(372, 671);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Character";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // tabPage3
             // 
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(363, 671);
+            this.tabPage3.Size = new System.Drawing.Size(372, 671);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Actions";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -165,8 +206,8 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 172F));
             this.tableLayoutPanel3.Controls.Add(this.messageBox, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.messageTypeBox, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.sendBut, 2, 0);
+            this.tableLayoutPanel3.Controls.Add(this.messageTypeBox, 1, 0);
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 668);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
@@ -184,18 +225,6 @@
             this.messageBox.Size = new System.Drawing.Size(567, 22);
             this.messageBox.TabIndex = 0;
             // 
-            // messageTypeBox
-            // 
-            this.messageTypeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.messageTypeBox.FormattingEnabled = true;
-            this.messageTypeBox.Items.AddRange(new object[] {
-            "Global",
-            "Local"});
-            this.messageTypeBox.Location = new System.Drawing.Point(576, 3);
-            this.messageTypeBox.Name = "messageTypeBox";
-            this.messageTypeBox.Size = new System.Drawing.Size(172, 24);
-            this.messageTypeBox.TabIndex = 1;
-            // 
             // sendBut
             // 
             this.sendBut.Location = new System.Drawing.Point(754, 3);
@@ -205,37 +234,58 @@
             this.sendBut.Text = "Send";
             this.sendBut.UseVisualStyleBackColor = true;
             // 
-            // playersBox
+            // messageTypeBox
             // 
-            this.playersBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.playersBox.FormattingEnabled = true;
-            this.playersBox.ItemHeight = 16;
-            this.playersBox.Location = new System.Drawing.Point(0, 0);
-            this.playersBox.Name = "playersBox";
-            this.playersBox.Size = new System.Drawing.Size(372, 628);
-            this.playersBox.TabIndex = 0;
+            this.messageTypeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.messageTypeBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.messageTypeBox.FormattingEnabled = true;
+            this.messageTypeBox.Items.AddRange(new object[] {
+            "Global",
+            "Local"});
+            this.messageTypeBox.Location = new System.Drawing.Point(576, 3);
+            this.messageTypeBox.Name = "messageTypeBox";
+            this.messageTypeBox.Size = new System.Drawing.Size(172, 24);
+            this.messageTypeBox.TabIndex = 1;
             // 
-            // statusLabel
+            // characterLab
             // 
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(80, 21);
-            this.statusLabel.Text = "Connected";
+            this.characterLab.AutoSize = true;
+            this.characterLab.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.characterLab.Location = new System.Drawing.Point(3, 43);
+            this.characterLab.Name = "characterLab";
+            this.characterLab.Size = new System.Drawing.Size(150, 25);
+            this.characterLab.TabIndex = 1;
+            this.characterLab.Text = "CharacterName";
             // 
-            // turnProgress
+            // playerLab
             // 
-            this.turnProgress.Name = "turnProgress";
-            this.turnProgress.Size = new System.Drawing.Size(267, 20);
+            this.playerLab.AutoSize = true;
+            this.playerLab.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.playerLab.Location = new System.Drawing.Point(3, 14);
+            this.playerLab.Name = "playerLab";
+            this.playerLab.Size = new System.Drawing.Size(156, 29);
+            this.playerLab.TabIndex = 0;
+            this.playerLab.Text = "PlayerName";
             // 
-            // readyBut
+            // panel1
             // 
-            this.readyBut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.readyBut.Location = new System.Drawing.Point(0, 642);
-            this.readyBut.Name = "readyBut";
-            this.readyBut.Size = new System.Drawing.Size(372, 23);
-            this.readyBut.TabIndex = 1;
-            this.readyBut.Text = "Not Ready";
-            this.readyBut.UseVisualStyleBackColor = true;
+            this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel1.Controls.Add(this.playerLab);
+            this.panel1.Controls.Add(this.characterLab);
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(372, 83);
+            this.panel1.TabIndex = 2;
+            // 
+            // locationLab
+            // 
+            this.locationLab.AutoSize = true;
+            this.locationLab.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.locationLab.Location = new System.Drawing.Point(6, 86);
+            this.locationLab.Name = "locationLab";
+            this.locationLab.Size = new System.Drawing.Size(73, 20);
+            this.locationLab.TabIndex = 3;
+            this.locationLab.Text = "Location";
             // 
             // Client
             // 
@@ -248,14 +298,19 @@
             this.Name = "Client";
             this.ShowIcon = false;
             this.Text = "The Coliseum";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Client_FormClosing);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -278,6 +333,10 @@
         public System.Windows.Forms.ToolStripStatusLabel statusLabel;
         public System.Windows.Forms.ToolStripProgressBar turnProgress;
         private System.Windows.Forms.Button readyBut;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label playerLab;
+        private System.Windows.Forms.Label characterLab;
+        private System.Windows.Forms.Label locationLab;
     }
 }
 
