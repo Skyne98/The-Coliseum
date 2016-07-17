@@ -17,7 +17,7 @@ namespace The_Coliseum
 
         public Character()
         {
-            Inventory = new Inventory(this);
+            Inventory = new InventorySystem(this);
             ActionsSystem = new ActionsSystem(this);
             ActionsSystem.RegisterActions();
         }
@@ -26,7 +26,7 @@ namespace The_Coliseum
         public byte AttLuck = 1;
 
         //Inventory
-        public Inventory Inventory;
+        public InventorySystem Inventory;
 
         //Location
         public Location Location = null;

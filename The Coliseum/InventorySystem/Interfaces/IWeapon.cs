@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace The_Coliseum
 {
-    public class Inventory
+    public interface IWeapon : IEquipable
     {
-        public Character Owner;
 
-        public Inventory(Character character)
-        {
-            Owner = character;
-        }
     }
 }
