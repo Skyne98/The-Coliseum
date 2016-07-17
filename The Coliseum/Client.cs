@@ -75,7 +75,7 @@ namespace The_Coliseum
                     color = Color.Blue;
                     break;
                 case LogType.Warning:
-                    color = Color.YellowGreen;
+                    color = Color.Orange;
                     break;
             }
 

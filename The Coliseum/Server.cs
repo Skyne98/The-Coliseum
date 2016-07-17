@@ -43,6 +43,7 @@ namespace The_Coliseum
 
         //Characters
         public int AttPoints = 0;
+        public Character SelectedCharacter;
 
         //Actions
         public List<Character> ReadyCharacters = new List<Character>();
@@ -72,7 +73,7 @@ namespace The_Coliseum
                     color = Color.Blue;
                     break;
                 case LogType.Warning:
-                    color = Color.YellowGreen;
+                    color = Color.Orange;
                     break;
             }
 
@@ -393,14 +394,32 @@ namespace The_Coliseum
         {
             ListBox box = charactersList;
 
-            box.Items.Clear();
+            box.Invoke(new Action(() => { box.Items.Clear(); }));
 
             foreach (Character character in Game.Characters)
             {
-                box.Items.Add(character.Name);
+                box.Invoke(new Action(() => { box.Items.Add(character.Name); }));
             }
 
-            box.Refresh();
+            box.Invoke(new Action(() => { box.Refresh(); }));
+        }
+
+        public void UpdateCharacter(Character character)
+        {
+            playerNameBox.Invoke(new Action(() => {
+                playerNameBox.Text = character.PlayerName;
+                characterNameBox.Text = character.Name;
+
+                if (character.Location != null)
+                    characterLocationBox.Text = character.Location.Name;
+                else
+                    characterLocationBox.Text = "No location";
+
+                attributesBox.BeginUpdate();
+                attributesBox.Items.Clear();
+                attributesBox.Items.Add($"Luck: {character.AttLuck}");
+                attributesBox.EndUpdate();
+            }));
         }
 
         private void Server_FormClosing(object sender, FormClosingEventArgs e)
@@ -409,6 +428,21 @@ namespace The_Coliseum
             UpdateThread.Abort();
             NetServer.Shutdown("bye");
             Application.Exit();
+        }
+
+        private void charactersList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Character character = Game.Characters[charactersList.SelectedIndex];
+            SelectedCharacter = character;
+            UpdateCharacter(SelectedCharacter);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (SelectedCharacter != null)
+            {
+                UpdateCharacter(SelectedCharacter);
+            }
         }
     }
 

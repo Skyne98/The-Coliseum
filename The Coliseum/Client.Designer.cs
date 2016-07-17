@@ -43,13 +43,13 @@
             this.playerLab = new System.Windows.Forms.Label();
             this.characterLab = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.actionsView = new System.Windows.Forms.TreeView();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.logBox = new System.Windows.Forms.RichTextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.messageBox = new System.Windows.Forms.TextBox();
             this.sendBut = new System.Windows.Forms.Button();
             this.messageTypeBox = new System.Windows.Forms.ComboBox();
-            this.actionsView = new System.Windows.Forms.TreeView();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -212,6 +212,18 @@
             this.tabPage3.Text = "Actions";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // actionsView
+            // 
+            this.actionsView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.actionsView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.actionsView.Location = new System.Drawing.Point(0, 0);
+            this.actionsView.Name = "actionsView";
+            this.actionsView.Size = new System.Drawing.Size(372, 678);
+            this.actionsView.TabIndex = 0;
+            this.actionsView.NodeMouseHover += new System.Windows.Forms.TreeNodeMouseHoverEventHandler(this.actionsView_NodeMouseHover);
+            this.actionsView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.actionsView_NodeMouseDoubleClick);
+            // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -292,18 +304,6 @@
             this.messageTypeBox.Name = "messageTypeBox";
             this.messageTypeBox.Size = new System.Drawing.Size(172, 24);
             this.messageTypeBox.TabIndex = 1;
-            // 
-            // actionsView
-            // 
-            this.actionsView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.actionsView.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.actionsView.Location = new System.Drawing.Point(0, 0);
-            this.actionsView.Name = "actionsView";
-            this.actionsView.Size = new System.Drawing.Size(372, 678);
-            this.actionsView.TabIndex = 0;
-            this.actionsView.NodeMouseHover += new System.Windows.Forms.TreeNodeMouseHoverEventHandler(this.actionsView_NodeMouseHover);
-            this.actionsView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.actionsView_NodeMouseDoubleClick);
             // 
             // Client
             // 
