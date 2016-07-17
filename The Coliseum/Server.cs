@@ -38,11 +38,15 @@ namespace The_Coliseum
         public int TurnNumber = 0;
 
         //Ready
+        public int TimeToStart = 5;
         public int ReadyTimer = 0;
 
         //Characters
         public int AttPoints = 0;
 
+        //Actions
+        public List<Character> ReadyCharacters = new List<Character>();
+             
         public Server(int turnTime, int attPoints)
         {
             InitializeComponent();
@@ -182,11 +186,17 @@ namespace The_Coliseum
                 {
                     ReadyTimer++;
 
-                    if (ReadyTimer < 30)
-                        ServerMessageSender.SendInfo(LogType.Warning, "Game starts in " + (30 - ReadyTimer) + " seconds", Game.Characters);
+                    if (ReadyTimer < TimeToStart)
+                        ServerMessageSender.SendInfo(LogType.Warning, "Game starts in " + (TimeToStart - ReadyTimer) + " seconds", Game.Characters);
                     else if (!Game.Started)
                     {
                         Game.Started = true;
+
+                        //Set Players Locations
+                        foreach (var character in Game.Characters)
+                        {
+                            character.SetLocation(The_Coliseum.Location.Find("Start"));
+                        }
                         ServerMessageSender.SendReady(true, Game.Characters);
                     }
                 } 
@@ -205,6 +215,21 @@ namespace The_Coliseum
                 turnProgress.GetCurrentParent().Invoke(new Action(() => turnLabel.Text = "Turn: " + TurnNumber));
             else
                 turnLabel.Text = "Turn: " + TurnNumber;
+
+            //Process Ready Characters
+            foreach (var character in ReadyCharacters)
+            {
+                character.ActionsSystem.ProcessCode(character.ActionsSystem.CurrentActionCode);
+            }
+
+            foreach (var character in Game.Characters)
+            {
+                //Send New Actions
+                character.ActionsSystem.GetActions();
+                character.ActionsSystem.SendActions();
+            }
+
+            ReadyCharacters = new List<Character>();
         }
 
         public void HandleIncome()
@@ -241,6 +266,9 @@ namespace The_Coliseum
                     break;
                 case ServerMessageSender.MessageType.Login:
                     HandleLogin(msg);
+                    break;
+                case ServerMessageSender.MessageType.String:
+                    HandleString(msg);
                     break;
             }
         }
@@ -296,6 +324,10 @@ namespace The_Coliseum
                     //Send About Game
                     ServerMessageSender.SendReady(Game.Started, character);
                     ServerMessageSender.SendInt(ServerMessageSender.IntType.TurnNumber, TurnNumber, character);
+                    character.ActionsSystem.SendActions();
+                    if (ReadyCharacters.Contains(character))
+                        ServerMessageSender.SendInt(ServerMessageSender.IntType.BlockAction, 1, character);
+                    ServerMessageSender.SendString(ServerMessageSender.StringType.NewLocation, character.Location.Name, character);
                 }
                 else
                 {
@@ -340,6 +372,23 @@ namespace The_Coliseum
             }
         }
 
+        public void HandleString(NetIncomingMessage msg)
+        {
+            ServerMessageSender.StringType type = (ServerMessageSender.StringType)msg.ReadByte();
+            string value = msg.ReadString();
+
+            switch (type)
+            {
+                case ServerMessageSender.StringType.NewAction:
+                    Character character = ServerMessageSender.GetCharacterFromMessage(msg);
+
+                    character.ActionsSystem.CurrentActionCode = value;
+                    ReadyCharacters.Add(character);
+                    ReadyCharacters.OrderBy(a => a.ActionsSystem.CurrentActionPriority);
+                    break;
+            }
+        }
+
         public void UpdateCharacterList()
         {
             ListBox box = charactersList;
@@ -380,7 +429,8 @@ namespace The_Coliseum
             CurrentPlayers,
             ReadyPlayers,
             TurnPercent,
-            TurnNumber
+            TurnNumber,
+            BlockAction
         }
 
         public enum StringType

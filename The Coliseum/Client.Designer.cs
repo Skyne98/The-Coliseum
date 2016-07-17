@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.turnProgress = new System.Windows.Forms.ToolStripProgressBar();
@@ -37,6 +38,10 @@
             this.readyBut = new System.Windows.Forms.Button();
             this.playersBox = new System.Windows.Forms.ListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.locationLab = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.playerLab = new System.Windows.Forms.Label();
+            this.characterLab = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.logBox = new System.Windows.Forms.RichTextBox();
@@ -44,18 +49,17 @@
             this.messageBox = new System.Windows.Forms.TextBox();
             this.sendBut = new System.Windows.Forms.Button();
             this.messageTypeBox = new System.Windows.Forms.ComboBox();
-            this.characterLab = new System.Windows.Forms.Label();
-            this.playerLab = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.locationLab = new System.Windows.Forms.Label();
+            this.actionsView = new System.Windows.Forms.TreeView();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip
@@ -138,11 +142,12 @@
             // 
             this.playersBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.playersBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.playersBox.FormattingEnabled = true;
             this.playersBox.ItemHeight = 16;
             this.playersBox.Location = new System.Drawing.Point(0, 0);
             this.playersBox.Name = "playersBox";
-            this.playersBox.Size = new System.Drawing.Size(372, 628);
+            this.playersBox.Size = new System.Drawing.Size(372, 624);
             this.playersBox.TabIndex = 0;
             // 
             // tabPage2
@@ -157,8 +162,49 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Character";
             // 
+            // locationLab
+            // 
+            this.locationLab.AutoSize = true;
+            this.locationLab.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.locationLab.Location = new System.Drawing.Point(6, 86);
+            this.locationLab.Name = "locationLab";
+            this.locationLab.Size = new System.Drawing.Size(73, 20);
+            this.locationLab.TabIndex = 3;
+            this.locationLab.Text = "Location";
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel1.Controls.Add(this.playerLab);
+            this.panel1.Controls.Add(this.characterLab);
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(372, 83);
+            this.panel1.TabIndex = 2;
+            // 
+            // playerLab
+            // 
+            this.playerLab.AutoSize = true;
+            this.playerLab.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.playerLab.Location = new System.Drawing.Point(3, 14);
+            this.playerLab.Name = "playerLab";
+            this.playerLab.Size = new System.Drawing.Size(156, 29);
+            this.playerLab.TabIndex = 0;
+            this.playerLab.Text = "PlayerName";
+            // 
+            // characterLab
+            // 
+            this.characterLab.AutoSize = true;
+            this.characterLab.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.characterLab.Location = new System.Drawing.Point(3, 43);
+            this.characterLab.Name = "characterLab";
+            this.characterLab.Size = new System.Drawing.Size(150, 25);
+            this.characterLab.TabIndex = 1;
+            this.characterLab.Text = "CharacterName";
+            // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.actionsView);
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(372, 671);
@@ -247,45 +293,17 @@
             this.messageTypeBox.Size = new System.Drawing.Size(172, 24);
             this.messageTypeBox.TabIndex = 1;
             // 
-            // characterLab
+            // actionsView
             // 
-            this.characterLab.AutoSize = true;
-            this.characterLab.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.characterLab.Location = new System.Drawing.Point(3, 43);
-            this.characterLab.Name = "characterLab";
-            this.characterLab.Size = new System.Drawing.Size(150, 25);
-            this.characterLab.TabIndex = 1;
-            this.characterLab.Text = "CharacterName";
-            // 
-            // playerLab
-            // 
-            this.playerLab.AutoSize = true;
-            this.playerLab.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.playerLab.Location = new System.Drawing.Point(3, 14);
-            this.playerLab.Name = "playerLab";
-            this.playerLab.Size = new System.Drawing.Size(156, 29);
-            this.playerLab.TabIndex = 0;
-            this.playerLab.Text = "PlayerName";
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panel1.Controls.Add(this.playerLab);
-            this.panel1.Controls.Add(this.characterLab);
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(372, 83);
-            this.panel1.TabIndex = 2;
-            // 
-            // locationLab
-            // 
-            this.locationLab.AutoSize = true;
-            this.locationLab.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.locationLab.Location = new System.Drawing.Point(6, 86);
-            this.locationLab.Name = "locationLab";
-            this.locationLab.Size = new System.Drawing.Size(73, 20);
-            this.locationLab.TabIndex = 3;
-            this.locationLab.Text = "Location";
+            this.actionsView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.actionsView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.actionsView.Location = new System.Drawing.Point(0, 0);
+            this.actionsView.Name = "actionsView";
+            this.actionsView.Size = new System.Drawing.Size(372, 678);
+            this.actionsView.TabIndex = 0;
+            this.actionsView.NodeMouseHover += new System.Windows.Forms.TreeNodeMouseHoverEventHandler(this.actionsView_NodeMouseHover);
+            this.actionsView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.actionsView_NodeMouseDoubleClick);
             // 
             // Client
             // 
@@ -306,11 +324,12 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -337,6 +356,8 @@
         private System.Windows.Forms.Label playerLab;
         private System.Windows.Forms.Label characterLab;
         private System.Windows.Forms.Label locationLab;
+        public System.Windows.Forms.TreeView actionsView;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

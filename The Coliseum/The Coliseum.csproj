@@ -54,10 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionSystem\Action.cs" />
-    <Compile Include="ActionSystem\ActiveCondition.cs" />
-    <Compile Include="ActionSystem\PassiveCondition.cs" />
-    <Compile Include="ActionSystem\Result.cs" />
+    <Compile Include="ActionSystem\ActionsSystem.cs" />
+    <Compile Include="ActionSystem\Actions\ActionMoveToOtherLocation.cs" />
+    <Compile Include="ActionSystem\CharacterAction.cs" />
     <Compile Include="ChooseForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +79,7 @@
     </Compile>
     <Compile Include="ServerClasses\Character.cs" />
     <Compile Include="ServerClasses\Game.cs" />
+    <Compile Include="ServerClasses\Inventory.cs" />
     <Compile Include="ServerClasses\Location.cs" />
     <Compile Include="ServerClasses\LocationLink.cs" />
     <EmbeddedResource Include="ChooseForm.resx">
@@ -114,12 +114,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ActionSystem\Actions\" />
-    <Folder Include="ActionSystem\ActiveConditions\" />
-    <Folder Include="ActionSystem\PassiveConditions\" />
-    <Folder Include="ActionSystem\Results\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

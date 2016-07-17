@@ -16,6 +16,12 @@ namespace The_Coliseum
         //Characters
         public List<Character> Characters = new List<Character>();
 
+        public bool HasLinks()
+        {
+            return Connections.Count > 0;
+        }
+
+
         public static void CreateLocation(string name)
         {
             Location location = new Location();
@@ -23,18 +29,25 @@ namespace The_Coliseum
 
             Server.MainServer.Game.Locations.Add(location);
         }
+
         public static void CreateLink(Location a, Location b)
         {
             LocationLink link = new LocationLink(a, b);
 
             Server.MainServer.Game.LocationLinks.Add(link);
         }
+
         public static void CreateLink(string a, string b)
         {
             Location al = Server.MainServer.Game.Locations.Find(t => t.Name == a);
             Location bl = Server.MainServer.Game.Locations.Find(t => t.Name == b);
 
             CreateLink(al, bl);
+        }
+
+        public static Location Find(string name)
+        {
+            return Server.MainServer.Game.Locations.Find(t => t.Name == name);
         }
     }
 }

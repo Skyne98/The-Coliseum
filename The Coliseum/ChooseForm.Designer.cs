@@ -56,7 +56,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(16, 15);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(497, 427);
@@ -72,9 +72,9 @@
             this.tabPage1.Controls.Add(this.nameBox);
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage1.Size = new System.Drawing.Size(489, 398);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Play";
@@ -85,7 +85,7 @@
             this.addressBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.addressBox.Location = new System.Drawing.Point(85, 79);
-            this.addressBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.addressBox.Margin = new System.Windows.Forms.Padding(4);
             this.addressBox.Name = "addressBox";
             this.addressBox.Size = new System.Drawing.Size(392, 22);
             this.addressBox.TabIndex = 6;
@@ -104,7 +104,7 @@
             // connectBut
             // 
             this.connectBut.Location = new System.Drawing.Point(4, 111);
-            this.connectBut.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.connectBut.Margin = new System.Windows.Forms.Padding(4);
             this.connectBut.Name = "connectBut";
             this.connectBut.Size = new System.Drawing.Size(479, 28);
             this.connectBut.TabIndex = 4;
@@ -117,7 +117,7 @@
             this.characterBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.characterBox.Location = new System.Drawing.Point(85, 47);
-            this.characterBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.characterBox.Margin = new System.Windows.Forms.Padding(4);
             this.characterBox.Name = "characterBox";
             this.characterBox.Size = new System.Drawing.Size(392, 22);
             this.characterBox.TabIndex = 3;
@@ -138,7 +138,7 @@
             this.nameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nameBox.Location = new System.Drawing.Point(85, 17);
-            this.nameBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.nameBox.Margin = new System.Windows.Forms.Padding(4);
             this.nameBox.Name = "nameBox";
             this.nameBox.Size = new System.Drawing.Size(392, 22);
             this.nameBox.TabIndex = 1;
@@ -161,9 +161,9 @@
             this.tabPage2.Controls.Add(this.turnBox);
             this.tabPage2.Controls.Add(this.label3);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage2.Size = new System.Drawing.Size(489, 398);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Host";
@@ -174,7 +174,7 @@
             this.pointsBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pointsBox.Location = new System.Drawing.Point(85, 52);
-            this.pointsBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pointsBox.Margin = new System.Windows.Forms.Padding(4);
             this.pointsBox.Name = "pointsBox";
             this.pointsBox.Size = new System.Drawing.Size(392, 22);
             this.pointsBox.TabIndex = 5;
@@ -195,7 +195,7 @@
             this.turnBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.turnBox.Location = new System.Drawing.Point(85, 20);
-            this.turnBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.turnBox.Margin = new System.Windows.Forms.Padding(4);
             this.turnBox.Name = "turnBox";
             this.turnBox.Size = new System.Drawing.Size(392, 22);
             this.turnBox.TabIndex = 3;
@@ -216,7 +216,7 @@
             this.startBut.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.startBut.Location = new System.Drawing.Point(16, 449);
-            this.startBut.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.startBut.Margin = new System.Windows.Forms.Padding(4);
             this.startBut.Name = "startBut";
             this.startBut.Size = new System.Drawing.Size(497, 36);
             this.startBut.TabIndex = 1;
@@ -232,10 +232,11 @@
             this.Controls.Add(this.startBut);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ChooseForm";
             this.ShowIcon = false;
             this.Text = "The Coliseum";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ChooseForm_FormClosed);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();

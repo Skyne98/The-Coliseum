@@ -174,7 +174,7 @@ namespace The_Coliseum
         {
             bool ready = msg.ReadBoolean();
             GameReady = ready;
-            readyBut.Enabled = !GameReady;
+            readyBut.Invoke(new Action(() => { readyBut.Enabled = !GameReady; }));
         }
 
         public void HandleInfo(NetIncomingMessage msg)
@@ -222,7 +222,23 @@ namespace The_Coliseum
                     {
                         ChangeStatus("Turn: " + value);
                         TurnNumber = value;
+
+                        //Reset Actions
+                        actionsView.Invoke(new Action(() =>
+                        {
+                            actionsView.BeginUpdate();
+                            actionsView.Nodes.Clear();
+                            actionsView.Nodes.Add("Actions");
+                            actionsView.EndUpdate();
+                        }));
+                        
                     }
+                    break;
+                case ServerMessageSender.IntType.BlockAction:
+                    if (value == 1)
+                        actionsView.Invoke(new Action(() => { actionsView.Enabled = true; }));
+                    else
+                        actionsView.Invoke(new Action(() => { actionsView.Enabled = false; }));
                     break;
             }
         }
@@ -235,12 +251,19 @@ namespace The_Coliseum
             switch (type)
             {
                 case ServerMessageSender.StringType.NewPlayer:
-                    playersBox.Items.Add(value);
-                    playersBox.Refresh();
+                    playersBox.Invoke(new Action(() => {
+                        playersBox.Items.Add(value);
+                        playersBox.Refresh();
+                    }));
                     break;
                 case ServerMessageSender.StringType.NewLocation:
                     CharacterLocation = value;
-                    locationLab.Text = "Location: " + value;
+                    locationLab.Invoke(new Action(() => { locationLab.Text = "Location: " + value; }));
+                    break;
+                case ServerMessageSender.StringType.NewAction:
+                    PopulateActionsView(value);
+                    actionsView.Invoke(new Action(() => { actionsView.Nodes[0].Expand(); }));
+                    actionsView.Invoke(new Action(() => { actionsView.Enabled = true; }));
                     break;
             }
         }
@@ -259,6 +282,44 @@ namespace The_Coliseum
                 turnProgress.GetCurrentParent().Invoke(new Action(() => turnProgress.Value = value));
             else
                 turnProgress.Value = value;
+        }
+
+        public void PopulateActionsView(string action)
+        {
+            string path = action.Split(@"|".ToCharArray())[0];
+            string toolTip = action.Split(@"|".ToCharArray())[1];
+            string code = action.Split(@"|".ToCharArray())[2];
+
+            actionsView.Invoke(new Action(() => { actionsView.BeginUpdate(); }));
+            TreeNode root = actionsView.Nodes[0];
+            TreeNode node = root;
+
+            foreach (string pathBits in path.Split(@"\".ToCharArray()))
+            {
+                if (path.Split(@"\".ToCharArray()).ToList().IndexOf(pathBits) != path.Split(@"\".ToCharArray()).Length - 1)
+                    node = AddNode(node, pathBits, "", "");
+                else
+                    node = AddNode(node, pathBits, toolTip, code);
+            }
+            actionsView.Invoke(new Action(() => { actionsView.EndUpdate(); }));
+        }
+
+        private TreeNode AddNode(TreeNode node, string key, string toolTip, string code)
+        {
+            if (node.Nodes.ContainsKey(key))
+            {
+                return node.Nodes[key];
+            }
+            else
+            {
+                TreeNode newNode = new TreeNode();
+                newNode.Text = key;
+                newNode.Name = key;
+                if (!string.IsNullOrEmpty(toolTip))
+                    newNode.Tag = new ActionInfo(toolTip, code);
+                actionsView.Invoke(new Action(() => { node.Nodes.Add(newNode); }));
+                return newNode;
+            }
         }
 
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
@@ -280,6 +341,41 @@ namespace The_Coliseum
 
             ClientMessageSender.SendReady(Ready);
         }
+
+        private void actionsView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node.Tag != null)
+            {
+                ActionInfo info = (ActionInfo)e.Node.Tag;
+
+                ClientMessageSender.SendString(ServerMessageSender.StringType.NewAction, info.code);
+                actionsView.Invoke(new Action(() => { actionsView.Enabled = false; }));
+            }
+        }
+
+        private void actionsView_NodeMouseHover(object sender, TreeNodeMouseHoverEventArgs e)
+        {
+            if (e.Node.Tag != null)
+            {
+                if (!string.IsNullOrEmpty(((ActionInfo)e.Node.Tag).toolTip))
+                {
+                    toolTip1.ToolTipTitle = "Tip";
+                    toolTip1.Show(((ActionInfo)e.Node.Tag).toolTip, this, e.Node.Bounds.X + e.Node.Bounds.Height / 2, e.Node.Bounds.Y, 500);
+                }
+            }
+        }
+    }
+
+    public struct ActionInfo
+    {
+        public string toolTip;
+        public string code;
+
+        public ActionInfo(string a, string b)
+        {
+            toolTip = a;
+            code = b;
+        }
     }
 
     public static class ClientMessageSender
@@ -298,6 +394,15 @@ namespace The_Coliseum
             NetOutgoingMessage msg = Client.MainClient.NetClient.CreateMessage();
             msg.Write((byte)ServerMessageSender.MessageType.Ready);
             msg.Write(ready);
+            Send(msg, 0);
+        }
+
+        public static void SendString(ServerMessageSender.StringType type, string value)
+        {
+            NetOutgoingMessage msg = Client.MainClient.NetClient.CreateMessage();
+            msg.Write((byte)ServerMessageSender.MessageType.String);
+            msg.Write((byte)type);
+            msg.Write(value);
             Send(msg, 0);
         }
 

@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace The_Coliseum
 {
-    public class PassiveCondition
+    public class Inventory
     {
-        public virtual bool GetResult()
+        public Character Owner;
+
+        public Inventory(Character character)
         {
-            return true;
+            Owner = character;
         }
     }
 }

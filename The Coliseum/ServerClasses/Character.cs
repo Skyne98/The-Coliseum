@@ -15,8 +15,18 @@ namespace The_Coliseum
 
         public bool Ready = false; //For lobby
 
+        public Character()
+        {
+            Inventory = new Inventory(this);
+            ActionsSystem = new ActionsSystem(this);
+            ActionsSystem.RegisterActions();
+        }
+
         //Attributes
         public byte AttLuck = 1;
+
+        //Inventory
+        public Inventory Inventory;
 
         //Location
         public Location Location = null;
@@ -33,9 +43,6 @@ namespace The_Coliseum
         }
 
         //Actions
-        public string GetActions()
-        {
-            return "";
-        }
+        public ActionsSystem ActionsSystem;
     }
 }

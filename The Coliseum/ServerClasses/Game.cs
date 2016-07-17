@@ -18,6 +18,7 @@ namespace The_Coliseum
 
         public Game()
         {
+            Server.MainServer.Game = this;
             Init();
         }
 
@@ -29,6 +30,9 @@ namespace The_Coliseum
 
         public void InitLocations()
         {
+            Locations = new List<Location>();
+            LocationLinks = new List<LocationLink>();
+
             Location.CreateLocation("Start");
             Location.CreateLocation("Forest");
             Location.CreateLocation("Swamp");

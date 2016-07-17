@@ -15,6 +15,7 @@ namespace The_Coliseum
     public partial class ChooseForm : Form
     {
         public Client Client;
+        public bool Opened = false;
 
         public ChooseForm()
         {
@@ -28,6 +29,7 @@ namespace The_Coliseum
                 if (Client != null)
                 {
                     Client.Show();
+                    Opened = true;
                     Close();
                     Client.Init();
                 }
@@ -40,6 +42,7 @@ namespace The_Coliseum
             {
                 Server server = new Server(Convert.ToInt32(turnBox.Text), Convert.ToInt32(pointsBox.Text));
                 server.Show();
+                Opened = true;
                 Close();
             }
         }
@@ -68,6 +71,12 @@ namespace The_Coliseum
             {
                 MessageBox.Show("Error: " + ex);
             }
+        }
+
+        private void ChooseForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (!Opened)
+                Application.Exit();
         }
     }
 }
